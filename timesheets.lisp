@@ -7,6 +7,8 @@
 		       :accessor month)
    (day                :initarg :day
 		       :accessor day)
+   (year               :initarg :year
+		       :accessor year)
    (student-last-name  :initarg :last-name
 		       :accessor last-name)
    (student-first-name :initarg :first-name
@@ -20,21 +22,25 @@
   (print-unreadable-object (obj stream :type t)
     (with-accessors ((month month)
 		     (day day)
+		     (year year)
 		     (last-name last-name)
 		     (first-name first-name)
 		     (duration duration)
 		     (notes notes))
 	obj
-      (format stream "~a/~a, ~a ~a|~a|~a" month day last-name first-name duration notes))))
+      (format stream "~a/~a/~a, ~a ~a, ~a min, ~a" month day year last-name first-name duration notes))))
 
-(defun make-lesson (month day last first duration notes)
+(defun make-lesson (month day year last-name first-name duration notes)
   (make-instance 'lesson
 		 :month month
 		 :day day
-		 :last last-name
-		 :first first-name
+		 :year year
+		 :last-name last-name
+		 :first-name first-name
 		 :duration duration
 		 :notes notes))
+
+(defvar test-lesson (make-lesson 3 26 2022 "Walton" "Izaak" 45 "Arrived"))
 
 (defclass month ()
   ((title   :initarg :title
@@ -52,10 +58,34 @@
 	obj
       (format stream "~a, ~a, ~{~%~a~}~%" title year lessons))))
 
+(defvar month-chart '((1 "January")
+		      (2 "February")
+		      (3 "March")
+		      (4 "April")
+		      (5 "May")
+		      (6 "June")
+		      (7 "July")
+		      (8 "August")
+		      (9 "September")
+		      (10 "October")
+		      (11 "November")
+		      (12 "December")))
 
+;(defun find-lessons (month year)
+ ; (loop for lesson in *lessons-list*
+;	if (
+;(defun make-month (month year)
+ ; "Takes ints month and a year, searches for all matching items in *lessons-list*"
+  ;(make-instance 'month :title (second (assoc month month-chart))
+;		        :lessons 
+		 
 (defclass timesheet ()
   ((month  :initarg :month
-	   :accessor month)))
+	   :accessor month)
+   (minutes :initarg :minutes
+	    :accessor minutes)
+   (total   :initarg :total
+	    :accessor total)))
 ;;;;lesson class, timesheet class/template/macro- generate with a function that takes a month's lessons as input
 ;;;;print function that makes a txt file invoice
 

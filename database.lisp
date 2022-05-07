@@ -12,16 +12,17 @@
 		       :direction :output
 		       :if-exists :append)
     (format out
-	    "~%(add-to-lessons-list ~a ~a ~a ~a ~a ~a)"
+	    "~%(add-to-lessons-list (make-lesson ~a ~a ~a ~a ~a ~a ~a))"
 	    (write-to-string (month lesson))
 	    (write-to-string (day lesson))
+	    (write-to-string (year lesson))
 	    (write-to-string (last-name lesson))
 	    (write-to-string (first-name lesson))
 	    (write-to-string (duration lesson))
 	    (write-to-string (notes lesson)))))
 
 (defun add-lesson (lesson)
-  (add-to-lesson-list lesson)
+  (add-to-lessons-list lesson)
   (update-backup lesson))
 
 ;;;;------------------------------------------------------------------------
@@ -34,12 +35,13 @@
   (read-line *query-io*))
 
 (defun lesson-entry ()
-  (add-lesson (make-lesson :month (prompt-read "Month")
-			   :day   (prompt-read "Day")
-			   :last-name (prompt-read "Last Name")
-			   :first-name (prompt-read "First Name")
-			   :duration   (prompt-read "Duration")
-			   :notes      (prompt-read "Notes"))))
+  (add-lesson (make-lesson (parse-integer (prompt-read "Month"))
+			   (parse-integer (prompt-read "Day"))
+			   (parse-integer (prompt-read "Year"))
+			   (prompt-read "Last Name")
+			   (prompt-read "First Name")
+			   (parse-integer (prompt-read "Duration"))
+			   (prompt-read "Notes"))))
 
 (Defun enter-lessons ()
   (loop (lesson-entry)
